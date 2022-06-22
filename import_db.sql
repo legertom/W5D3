@@ -29,33 +29,11 @@ CREATE TABLE question_follows (
 
 );
 
--- FIX FOREIGN KEY CONSTRAINT ERROR 
-CREATE TABLE replies (
-    id INTEGER PRIMARY KEY,
-    parent_id INTEGER,
-    user_id INTEGER NOT NULL,
-    body TEXT NOT NULL,
-    top_level INTEGER NOT NULL,
-    FOREIGN KEY (parent_id) REFERENCES replies(id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (top_level) REFERENCES questions(id)
-
-);
-
--- INSERT INTO 
---     replies(parent_id, user_id, body, top_level)
--- VALUES
---     (NULL,1,'Dog',1),
---     (NULL,2,'Cheese and pineapple', 2);
-
-CREATE TABLE question_likes (
-    id INTEGER PRIMARY KEY,
-    likes INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
-    question_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (question_id) REFERENCES questions(id)
-);
+INSERT INTO 
+    question_follows(user_id, question_id)
+VALUES 
+    (1, 1),
+    (2, 2)
 
 INSERT INTO 
     users(fname, lname)
@@ -68,3 +46,35 @@ INSERT INTO
 VALUES
     ('Am I a cat?', 'Yes my name is Chad.', 1),
     ('What''s for lunch', 'How about pizza', 2);
+
+
+
+-- FIX FOREIGN KEY CONSTRAINT ERROR 
+CREATE TABLE replies (
+    id INTEGER PRIMARY KEY,
+    parent_id INTEGER,
+    body TEXT NOT NULL,
+    author_id INTEGER NOT NULL,
+    question_id INTEGER NOT NULL,
+    FOREIGN KEY (parent_id) REFERENCES replies(id),
+    FOREIGN KEY (author_id) REFERENCES users(id),
+    FOREIGN KEY (question_id) REFERENCES questions(id)
+
+);
+
+INSERT INTO 
+    replies(parent_id, body, author_id, question_id)
+VALUES
+    (NULL,'Dog',1,1),
+    (NULL,'Cheese and pineapple',2,2);
+
+CREATE TABLE question_likes (
+    id INTEGER PRIMARY KEY,
+    likes INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    question_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (question_id) REFERENCES questions(id)
+);
+
+
